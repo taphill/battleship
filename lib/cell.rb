@@ -9,11 +9,7 @@ class Cell
   end
 
   def empty?
-    if has_ship
-      false
-    else
-      true
-    end
+    has_ship ? false : true
   end
 
   def place_ship(ship_to_add)
