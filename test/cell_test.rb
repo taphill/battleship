@@ -17,5 +17,32 @@ class CellTest < MiniTest::Test
     assert_equal "B4", cell.coordinate
   end
 
+  def test_ship
+    cruiser = Ship.new("Cruiser", 3)
+    cell = Cell.new("B4")
+
+    assert_nil cell.ship
+
+    cell.place_ship(cruiser)
+    assert_equal cruiser, cell.ship
+  end
+
+  def test_empty?
+    cruiser = Ship.new("Cruiser", 3)
+    cell = Cell.new("B4")
+
+    assert_equal false, cell.empty?
+
+    cell.place_ship(cruiser)
+    assert_equal true, cell.empty?
+  end
+
+  def test_place_ship
+    cruiser = Ship.new("Cruiser", 3)
+    cell = Cell.new("B4")
+    cell.place_ship(cruiser)
+
+    assert_equal cruiser, cell.ship
+  end
 
 end
