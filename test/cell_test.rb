@@ -4,7 +4,6 @@ require './lib/ship'
 require './lib/cell'
 
 class CellTest < MiniTest::Test
-
   def test_it_exists
     cell = Cell.new("B4")
 
@@ -68,5 +67,4 @@ class CellTest < MiniTest::Test
 
     assert_equal 2, cruiser.health
   end
-
 end

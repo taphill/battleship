@@ -1,6 +1,6 @@
 class Ship
-  attr_reader :name
   attr_accessor :length
+  attr_reader :name
 
   def initialize(name, length)
     @name = name
@@ -18,6 +18,6 @@ class Ship
   def hit
     return 'Already sunk' if length <= 0
 
-    @length -= 1
+    self.length -= 1
   end
 end
