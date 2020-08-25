@@ -32,24 +32,36 @@ class Cell
     fired_at
   end
 
-  def render(show_ship = false)
-    if fired_upon? && empty? == false && ship.sunk?
-      "X"
-    elsif fired_upon? && empty?
-      "M"
-    elsif fired_upon? && (empty? == false)
-      "H"
-    elsif (fired_upon? == false) && show_ship == true
-      "S"
-    elsif fired_upon? == false
-      "."
-    else
-      "ERROR"
-    end
+  def render(show = false)
+    return "S" if show_ship(show)
+    return "X" if sunk?
+    return "M" if miss?
+    return "H" if hit?
+    return "." if not_fired_at
   end
 
   private
 
   attr_accessor :has_ship, :fired_at
   attr_writer :ship
+
+  def hit?
+    fired_upon? && (empty? == false)
+  end
+
+  def miss?
+    fired_upon? && empty?
+  end
+
+  def sunk?
+    fired_upon? && (empty? == false) && ship.sunk?
+  end
+
+  def not_fired_at
+    fired_upon? == false
+  end
+
+  def show_ship(show)
+    fired_upon? == false && show == true
+  end
 end
