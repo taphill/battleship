@@ -1,5 +1,6 @@
 class Cell
   attr_reader :coordinate, :ship
+
   def initialize(coordinate)
     @coordinate = coordinate
     @ship = nil
@@ -8,20 +9,25 @@ class Cell
   end
 
   def empty?
-    @has_ship
+    has_ship
   end
 
   def place_ship(ship_to_add)
-    @ship = ship_to_add
-    @has_ship = true
+    self.ship = ship_to_add
+    self.has_ship = true
   end
 
   def fire_upon
-    @fired_at = true
+    self.fired_at = true
     ship.length -= 1
   end
 
   def fired_upon?
-    @fired_at
+    fired_at
   end
+
+  private
+
+  attr_accessor :has_ship, :fired_at
+  attr_writer :ship
 end
