@@ -26,6 +26,13 @@ class Board
     cells.has_key?(coordinate)
   end
 
-
+  def valid_placement?(ship, coordinates)
+    ship.length == coordinates.length
+    require 'pry'; binding.pry
+#    new_array = []
+#    new_array << cells.keys.flatten
+#    new_array.each_cons(coordinates)
+    #are coordinates within cells
+  end
 
 end
