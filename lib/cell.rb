@@ -4,17 +4,17 @@ class Cell
   def initialize(coordinate)
     @coordinate = coordinate
     @ship = nil
-    @has_ship = false
     @fired_at = false
   end
 
   def empty?
-    has_ship ? false : true
+    !(ship.class == Ship)
   end
 
   def place_ship(ship_to_add)
+    return 'ERROR: Must be ship object' unless ship_to_add.class == Ship
+
     self.ship = ship_to_add
-    self.has_ship = true
   end
 
   def fire_upon
@@ -29,16 +29,16 @@ class Cell
   end
 
   def render(show = false)
-    return "S" if show_ship(show)
-    return "X" if sunk?
-    return "M" if miss?
-    return "H" if hit?
-    return "." if not_fired_at
+    return 'S' if show_ship(show)
+    return 'X' if sunk?
+    return 'M' if miss?
+    return 'H' if hit?
+    return '.' if not_fired_at
   end
 
   private
 
-  attr_accessor :has_ship, :fired_at
+  attr_accessor :fired_at
   attr_writer :ship
 
   def hit?
@@ -58,6 +58,6 @@ class Cell
   end
 
   def show_ship(show)
-    fired_upon? == false && show == true
+    (fired_upon? == false) && (show == true)
   end
 end
