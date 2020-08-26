@@ -27,12 +27,56 @@ class Board
   end
 
   def valid_placement?(ship, coordinates)
-    ship.length == coordinates.length
-    require 'pry'; binding.pry
-#    new_array = []
-#    new_array << cells.keys.flatten
-#    new_array.each_cons(coordinates)
-    #are coordinates within cells
+    #return true if ship.length == coordinates.length
+
+    split_coordinates = split_coordinates(coordinates)
+
+    if value_at_0_same?(split_coordinates) && value_at_1_same?(coordinates)
+      false
+    elsif value_at_0_same?(split_coordinates)
+      consecutive?(flatten_array(split_coordinates, 1))
+    elsif value_at_1_same?(split_coordinates)
+      consecutive?(flatten_array(split_coordinates, 0))
+    else
+      false
+    end
   end
 
+  private
+
+  def split_coordinates(coordinates)
+    coordinates.map do |coordinate|
+      coordinate.split('').map do |character|
+        character.ord
+      end
+    end
+  end
+
+  def value_at_0_same?(coordinates)
+    value = coordinates[0][0]
+
+    coordinates.all? do |block|
+      block[0] == value
+    end
+  end
+
+  def value_at_1_same?(coordinates)
+    value = coordinates[0][1]
+
+    coordinates.all? do |block|
+      block[1] == value
+    end
+  end
+
+  def flatten_array(coordinates, index)
+    coordinates.map do |coordinate|
+      coordinate[index]
+    end
+  end
+
+  def consecutive?(array)
+    array.each_cons(2).all? do |current_num, next_num|
+      next_num == current_num + 1
+    end
+  end
 end
