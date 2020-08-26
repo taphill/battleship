@@ -53,7 +53,7 @@ class Board
 
   def board_render(show_ship = false)
     print "  1 2 3 4 \n"
-    print "A . . . . \n"
+    print "A #{cells['A1'].render(show_ship)} . . . \n"
     print "B . . . . \n"
     print "C . . . . \n"
     print "D . . . . \n"
