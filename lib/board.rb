@@ -32,6 +32,7 @@ class Board
     return false unless ship.length == coordinates.length
     return false unless on_playing_board?(coordinates)
     return false if overlapping?(coordinates)
+
     split_coordinates = split_coordinates(coordinates)
 
     if value_at_0_same?(split_coordinates) && value_at_1_same?(coordinates)
@@ -59,17 +60,11 @@ class Board
     print "D #{cells['D1'].render(show_ship)} #{cells['D2'].render(show_ship)} #{cells['D3'].render(show_ship)} #{cells['D4'].render(show_ship)} \n"
   end
 
-
-
-
   private
 
   def split_coordinates(coordinates)
     coordinates.map do |coordinate|
       coordinate.split('').map(&:ord)
-      # coordinate.split('').map do |character|
-      #   character.ord
-      # end
     end
   end
 
