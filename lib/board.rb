@@ -30,6 +30,7 @@ class Board
 
   def valid_placement?(ship, coordinates)
     return false unless ship.length == coordinates.length
+    return false unless on_playing_board?(coordinates)
     return false if overlapping?(coordinates)
     split_coordinates = split_coordinates(coordinates)
 
@@ -92,6 +93,12 @@ class Board
   def overlapping?(coordinates)
     coordinates.any? do |coordinate|
       cells[coordinate].ship.class == Ship
+    end
+  end
+
+  def on_playing_board?(coordinates)
+    coordinates.all? do |coordinate|
+      cells.key?(coordinate)
     end
   end
 end
