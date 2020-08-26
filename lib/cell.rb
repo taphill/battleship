@@ -58,6 +58,6 @@ class Cell
   end
 
   def show_ship(show)
-    (fired_upon? == false) && (show == true)
+    (fired_upon? == false) && (show == true) && (empty? == false)
   end
 end
