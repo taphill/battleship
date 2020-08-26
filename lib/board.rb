@@ -30,7 +30,7 @@ class Board
 
   def valid_placement?(ship, coordinates)
     return false unless ship.length == coordinates.length
-
+    return false if overlapping?(coordinates)
     split_coordinates = split_coordinates(coordinates)
 
     if value_at_0_same?(split_coordinates) && value_at_1_same?(coordinates)
@@ -86,6 +86,12 @@ class Board
   def consecutive?(array)
     array.each_cons(2).all? do |current_num, next_num|
       next_num == current_num + 1
+    end
+  end
+
+  def overlapping?(coordinates)
+    coordinates.any? do |coordinate|
+      cells[coordinate].ship.class == Ship
     end
   end
 end
