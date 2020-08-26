@@ -29,11 +29,11 @@ class Cell
   end
 
   def render(show = false)
+    return 'S' if show_ship(show)
     return 'X' if sunk?
     return 'M' if miss?
     return 'H' if hit?
     return '.' if not_fired_at
-    return 'S' if show_ship(show)
   end
 
   private
@@ -58,6 +58,6 @@ class Cell
   end
 
   def show_ship(show)
-    (fired_upon? == false) && (show == true)
+    (fired_upon? == false) && (show == true) && (empty? == false)
   end
 end
