@@ -5,7 +5,6 @@ require './lib/cell'
 require './lib/board'
 
 class BoardTest < MiniTest::Test
-
   def test_it_exists
     board = Board.new
 
@@ -29,8 +28,6 @@ class BoardTest < MiniTest::Test
   end
 
   def test_valid_placement_length
-    skip
-
     board = Board.new
     cruiser = Ship.new("Cruiser", 3)
     submarine = Ship.new("Submarine", 2)
@@ -52,6 +49,36 @@ class BoardTest < MiniTest::Test
     assert_equal false, board.valid_placement?(cruiser, ["A3", "A2", "A1"])
     assert_equal false, board.valid_placement?(submarine, ["C1", "B1"])
     assert_equal true, board.valid_placement?(submarine, ["A2", "A3"])
+    assert_equal true, board.valid_placement?(cruiser, ["B1", "C1", "D1"])
+    assert_equal true, board.valid_placement?(submarine, ["A1", "A2"])
   end
 
+  def test_coordinates_cant_be_diagonal
+    board = Board.new
+    cruiser = Ship.new("Cruiser", 3)
+    submarine = Ship.new("Submarine", 2)
+
+    assert_equal false, board.valid_placement?(cruiser, ["A1", "B2", "C3"])
+    assert_equal false, board.valid_placement?(submarine, ["C2", "D3"])
+  end
+
+  def test_it_can_place_ships
+    board = Board.new
+    cruiser = Ship.new("Cruiser", 3)
+    submarine = Ship.new("Submarine", 2)
+
+    board.place(cruiser, ["A1", "A2", "A3"])
+
+    cell_1 = board.cells["A1"]
+    cell_2 = board.cells["A2"]
+    cell_3 = board.cells["A3"]
+
+    assert_equal cell_1.ship, cruiser
+    assert_equal cell_2.ship, cruiser
+    assert_equal cell_3.ship, cruiser
+
+    assert_equal cell_1.ship, cell_2.ship
+    assert_equal cell_1.ship, cell_3.ship
+    assert_equal cell_2.ship, cell_3.ship
+  end
 end
