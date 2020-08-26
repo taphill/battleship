@@ -100,4 +100,9 @@ class BoardTest < MiniTest::Test
 
     assert_equal false, board.valid_placement?(cruiser, ["A4", "A5", "A6"])
   end
+
+  def test_board_render
+
+
+  end
 end

@@ -51,6 +51,17 @@ class Board
     end
   end
 
+  def board_render(show_ship = false)
+    print "  1 2 3 4 \n"
+    print "A . . . . \n"
+    print "B . . . . \n"
+    print "C . . . . \n"
+    print "D . . . . \n"
+  end
+
+
+
+
   private
 
   def split_coordinates(coordinates)
