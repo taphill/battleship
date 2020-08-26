@@ -53,10 +53,10 @@ class Board
 
   def board_render(show_ship = false)
     print "  1 2 3 4 \n"
-    print "A #{cells['A1'].render(show_ship)} . . . \n"
-    print "B . . . . \n"
-    print "C . . . . \n"
-    print "D . . . . \n"
+    print "A #{cells['A1'].render(show_ship)} #{cells['A2'].render(show_ship)} #{cells['A3'].render(show_ship)} #{cells['A4'].render(show_ship)} \n"
+    print "B #{cells['B1'].render(show_ship)} #{cells['B2'].render(show_ship)} #{cells['B3'].render(show_ship)} #{cells['B4'].render(show_ship)} \n"
+    print "C #{cells['C1'].render(show_ship)} #{cells['C2'].render(show_ship)} #{cells['C3'].render(show_ship)} #{cells['C4'].render(show_ship)} \n"
+    print "D #{cells['D1'].render(show_ship)} #{cells['D2'].render(show_ship)} #{cells['D3'].render(show_ship)} #{cells['D4'].render(show_ship)} \n"
   end
 
 
