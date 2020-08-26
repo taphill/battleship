@@ -2,8 +2,10 @@ require './lib/cell'
 
 class Board
   attr_reader :cells
+
   def initialize
-    @cells = {"A1" => Cell.new("A1"),
+    @cells = {
+      "A1" => Cell.new("A1"),
       "A2" => Cell.new("A2"),
       "A3" => Cell.new("A3"),
       "A4" => Cell.new("A4"),
@@ -27,7 +29,7 @@ class Board
   end
 
   def valid_placement?(ship, coordinates)
-    #return true if ship.length == coordinates.length
+    return false unless ship.length == coordinates.length
 
     split_coordinates = split_coordinates(coordinates)
 
@@ -39,6 +41,14 @@ class Board
       consecutive?(flatten_array(split_coordinates, 0))
     else
       false
+    end
+  end
+
+  def place(ship, coordinates)
+    coordinates.each do |coordinate|
+      if cells.has_key?(coordinate)
+        cells[coordinate].place_ship(ship)
+      end
     end
   end
 
