@@ -17,4 +17,10 @@ class StartGameTest < MiniTest::Test
     #tested throught the start_game runner file.
     #ensured valid placement and random placement.
   end
+
+  def test_comp_ship_placement
+    #tested player input
+    #tested throught the start_game runner file.
+    #ensured valid placement and random placement.
+  end
 end
