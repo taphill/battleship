@@ -4,6 +4,6 @@ require './lib/board'
 require './lib/start_game'
 
 board = Board.new
-game = StartGame.new
+game = StartGame.new(board)
 
 game.start

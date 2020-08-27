@@ -12,4 +12,12 @@ class StartGameTest < MiniTest::Test
 
     assert_instance_of StartGame, game
   end
+
+  def test_comp_ship_placement
+    board = Board.new
+    cruiser = Ship.new("Cruiser", 3)
+    submarine = Ship.new("Submarine", 2)
+
+    #assert_equal
+  end
 end
