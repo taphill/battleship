@@ -113,8 +113,6 @@ class StartGame
       end
       cpu_board.cells[user_input].fire_upon
 
-#    "Your shot on A4 was a miss."
-
       coordinate = player_board.cells.keys.sample
       until player_board.valid_coordinate?(coordinate)
         coordinate = player_board.cells.keys.sample
@@ -135,6 +133,12 @@ class StartGame
 
   def won?
     (player_cruiser.sunk? && player_submarine.sunk?) || (cpu_cruiser.sunk? && cpu_submarine.sunk?)
+  end
+
+  def results?(coordinate)
+    puts "Your shot on #{coordinate} was a #{shot_result}."
+
+
   end
 
 
