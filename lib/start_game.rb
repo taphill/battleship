@@ -97,9 +97,9 @@ class StartGame
   end
 
   def turn
+    display_board
     until won?
-      display_board
-      puts "Enter the coordinate for your shot:"
+      puts "\nEnter the coordinate for your shot:"
 
       user_input = gets.chomp
       until cpu_board.valid_coordinate?(user_input)
@@ -118,9 +118,13 @@ class StartGame
         coordinate = player_board.cells.keys.sample
       end
       player_board.cells[coordinate].fire_upon
-    end
 
+      display_board
+      player_results?(user_input)
+      cpu_results?(coordinate)
+    end
     display_board
+
   end
 
   def display_board
@@ -136,24 +140,24 @@ class StartGame
   end
 
   def player_results?(coordinate)
-    if cpu_board.cells[coordinate].sunk?
-      puts "Your shot on #{coordinate} sunk a ship!"
-    elsif cpu_board.cells[coordinate].miss?
-      puts "Your shot on #{coordinate} was a miss."
-    elsif cpu_board.cells[coordinate].hit?
-      puts "Your shot on #{coordinate} was a hit!"
+    if cpu_board.cells[coordinate].render == "X"
+      puts "\nYour shot on #{coordinate} sunk a ship!"
+    elsif cpu_board.cells[coordinate].render == "M"
+      puts "\nYour shot on #{coordinate} was a miss."
+    elsif cpu_board.cells[coordinate].render == "H"
+      puts "\nYour shot on #{coordinate} was a hit!"
     else
       nil
     end
   end
 
   def cpu_results?(coordinate)
-    if player_board.cells[coordinate].sunk?
-      puts "My shot on #{coordinate} sunk a ship!"
-    elsif player_board.cells[coordinate].miss?
-      puts "My shot on #{coordinate} was a miss."
-    elsif player_board.cells[coordinate].hit?
-      puts "My shot on #{coordinate} was a hit!"
+    if player_board.cells[coordinate].render == "X"
+      puts "My shot on #{coordinate} sunk a ship!\n"
+    elsif player_board.cells[coordinate].render == "M"
+      puts "My shot on #{coordinate} was a miss.\n"
+    elsif player_board.cells[coordinate].render == "H"
+      puts "My shot on #{coordinate} was a hit!\n"
     else
       nil
     end
