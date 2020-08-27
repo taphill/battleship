@@ -100,10 +100,16 @@ class StartGame
     until won?
       display_board
       puts "Enter the coordinate for your shot:"
+
       user_input = gets.chomp
       until cpu_board.valid_coordinate?(user_input)
-        puts "Please enter a valid coordinate:"
-        user_input = gets.chomp
+        if cpu_board.cell_fired_at?(user_input)
+          puts "You've already fired at this coordinate....please enter a new one:"
+          user_input = gets.chomp
+        else
+          puts "Please enter a valid coordinate:"
+          user_input = gets.chomp
+        end
       end
       cpu_board.cells[user_input].fire_upon
 
