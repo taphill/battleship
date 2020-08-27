@@ -2,6 +2,10 @@ class StartGame
   def initialize(cpu_board, player_board)
     @cpu_board = cpu_board
     @player_board = player_board
+    @player_cruiser = Ship.new('Cruiser', 3)
+    @player_submarine = Ship.new('Submarine', 2)
+    @cpu_cruiser = Ship.new('Cruiser', 3)
+    @cpu_submarine = Ship.new('Submarine', 2)
   end
 
   def start
@@ -17,7 +21,7 @@ class StartGame
 
   private
 
-  attr_reader :cpu_board, :player_board
+  attr_reader :cpu_board, :player_board, :player_cruiser, :player_submarine, :cpu_cruiser, :cpu_submarine
 
   def intro
     puts "\nWelcome to BATTLESHIP\nEnter 'p' to play. Enter 'q' to quit."
@@ -36,8 +40,8 @@ class StartGame
   end
 
   def comp_ship_placement
-    cpu_cruiser = Ship.new('Cruiser', 3)
-    cpu_submarine = Ship.new('Submarine', 2)
+#    cpu_cruiser = Ship.new('Cruiser', 3)
+#    cpu_submarine = Ship.new('Submarine', 2)
 
     cruiser_coordinates = cpu_board.cells.keys.sample(3)
     until cpu_board.valid_placement?(cpu_cruiser, cruiser_coordinates)
@@ -57,8 +61,8 @@ class StartGame
   def player_ship_placement
     player_ship_placement_prompt
 
-    player_cruiser = Ship.new('Cruiser', 3)
-    player_submarine = Ship.new('Submarine', 2)
+#    player_cruiser = Ship.new('Cruiser', 3)
+#    player_submarine = Ship.new('Submarine', 2)
 
     puts 'Enter the squares for the Cruiser (3 spaces):'
     user_input = gets.chomp
@@ -93,22 +97,24 @@ class StartGame
   end
 
   def turn
-    display_board
-    puts "Enter the coordinate for your shot:"
-    user_input = gets.chomp
-    until cpu_board.valid_coordinate?(user_input)
-      puts "Please enter a valid coordinate:"
+    until won?
+      display_board
+      puts "Enter the coordinate for your shot:"
       user_input = gets.chomp
-    end
-    cpu_board.cells[user_input].fire_upon
+      until cpu_board.valid_coordinate?(user_input)
+        puts "Please enter a valid coordinate:"
+        user_input = gets.chomp
+      end
+      cpu_board.cells[user_input].fire_upon
 
 #    "Your shot on A4 was a miss."
 
-    coordinate = player_board.cells.keys.sample
-    until player_board.valid_coordinate?(coordinate)
       coordinate = player_board.cells.keys.sample
+      until player_board.valid_coordinate?(coordinate)
+        coordinate = player_board.cells.keys.sample
+      end
+      player_board.cells[coordinate].fire_upon
     end
-    player_board.cells[coordinate].fire_upon
 
     display_board
   end
@@ -119,6 +125,10 @@ class StartGame
 
     puts"==============PLAYER BOARD=============="
     player_board.board_render(true)
+  end
+
+  def won?
+    (player_cruiser.sunk? && player_submarine.sunk?) || (cpu_cruiser.sunk? && cpu_submarine.sunk?)
   end
 
 
