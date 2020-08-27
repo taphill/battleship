@@ -11,14 +11,11 @@ class StartGame
   def start
     intro
     user_ready?
-    until user_ready? == "\nGoodbye."
-      comp_ship_placement
-      cpu_board.board_render(true)
-      player_ship_placement
-      player_board.board_render(true)
-      who_won_game?
-      ready = user_ready?
-    end
+
+#      comp_ship_placement
+#      cpu_board.board_render(true)
+#      player_ship_placement
+#      player_board.board_render(true)
 
   end
 
@@ -100,6 +97,10 @@ class StartGame
   end
 
   def turn
+    comp_ship_placement
+    cpu_board.board_render(true)
+    player_ship_placement
+    player_board.board_render(true)
     until won?
       puts "\nEnter the coordinate for your shot:"
 
@@ -126,6 +127,9 @@ class StartGame
       cpu_results?(coordinate)
     end
     display_board
+    who_won_game?
+    puts "Would you like to play again?"
+    user_ready?
 
   end
 
