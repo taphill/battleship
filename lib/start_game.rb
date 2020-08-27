@@ -7,11 +7,12 @@ class StartGame
   def start
   #  intro
   #  user_ready?
-  #  comp_ship_placement
-  #  cpu_board.board_render(true)
-  #  player_ship_placement
-  #  player_board.board_render(true)
+    comp_ship_placement
+    cpu_board.board_render(true)
+    player_ship_placement
+    player_board.board_render(true)
   #display_board
+    turn
   end
 
   private
@@ -93,10 +94,23 @@ class StartGame
 
   def turn
     display_board
-    until user_input = valid_coordinate?
-      puts "Please enter 'p' to play or 'q' to quit."
+    puts "Enter the coordinate for your shot:"
+    user_input = gets.chomp
+    until cpu_board.valid_coordinate?(user_input)
+      puts "Please enter a valid coordinate:"
       user_input = gets.chomp
     end
+    cpu_board.cells[user_input].fire_upon
+
+#    "Your shot on A4 was a miss."
+
+    coordinate = player_board.cells.keys.sample
+    until player_board.valid_coordinate?(coordinate)
+      coordinate = player_board.cells.keys.sample
+    end
+    player_board.cells[coordinate].fire_upon
+
+    display_board
   end
 
   def display_board
