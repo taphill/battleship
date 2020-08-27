@@ -17,6 +17,7 @@ class StartGame
     player_board.board_render(true)
   #display_board
     turn
+    who_won_game?
   end
 
   private
@@ -97,7 +98,6 @@ class StartGame
   end
 
   def turn
-    display_board
     until won?
       puts "\nEnter the coordinate for your shot:"
 
@@ -161,6 +161,16 @@ class StartGame
     else
       nil
     end
+  end
+
+  def who_won_game?
+    if (player_cruiser.sunk? && player_submarine.sunk?)
+      puts "I won!"
+    elsif (cpu_cruiser.sunk? && cpu_submarine.sunk?)
+      puts "You won!"
+    else
+      puts "Uh oh, something went wrong!"
+    end 
   end
 
 
