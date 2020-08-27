@@ -8,7 +8,10 @@ require './lib/start_game'
 class StartGameTest < MiniTest::Test
 
   def test_in_exists
-    game = StartGame.new
+    cpu_board = Board.new
+    player_board = Board.new
+
+    game = StartGame.new(cpu_board, player_board)
 
     assert_instance_of StartGame, game
   end
