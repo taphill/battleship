@@ -9,15 +9,17 @@ class StartGame
   end
 
   def start
-  #  intro
-  #  user_ready?
-    comp_ship_placement
-    cpu_board.board_render(true)
-    player_ship_placement
-    player_board.board_render(true)
-  #display_board
-    turn
-    who_won_game?
+    intro
+    user_ready?
+    until user_ready? == "\nGoodbye."
+      comp_ship_placement
+      cpu_board.board_render(true)
+      player_ship_placement
+      player_board.board_render(true)
+      who_won_game?
+      ready = user_ready?
+    end
+
   end
 
   private
@@ -165,12 +167,12 @@ class StartGame
 
   def who_won_game?
     if (player_cruiser.sunk? && player_submarine.sunk?)
-      puts "I won!"
+      puts "\n\nI won!"
     elsif (cpu_cruiser.sunk? && cpu_submarine.sunk?)
-      puts "You won!"
+      puts "\n\nYou won!"
     else
       puts "Uh oh, something went wrong!"
-    end 
+    end
   end
 
 
