@@ -135,10 +135,28 @@ class StartGame
     (player_cruiser.sunk? && player_submarine.sunk?) || (cpu_cruiser.sunk? && cpu_submarine.sunk?)
   end
 
-  def results?(coordinate)
-    puts "Your shot on #{coordinate} was a #{shot_result}."
+  def player_results?(coordinate)
+    if cpu_board.cells[coordinate].sunk?
+      puts "Your shot on #{coordinate} sunk a ship!"
+    elsif cpu_board.cells[coordinate].miss?
+      puts "Your shot on #{coordinate} was a miss."
+    elsif cpu_board.cells[coordinate].hit?
+      puts "Your shot on #{coordinate} was a hit!"
+    else
+      nil
+    end
+  end
 
-
+  def cpu_results?(coordinate)
+    if player_board.cells[coordinate].sunk?
+      puts "My shot on #{coordinate} sunk a ship!"
+    elsif player_board.cells[coordinate].miss?
+      puts "My shot on #{coordinate} was a miss."
+    elsif player_board.cells[coordinate].hit?
+      puts "My shot on #{coordinate} was a hit!"
+    else
+      nil
+    end
   end
 
 
