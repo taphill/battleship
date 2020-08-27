@@ -9,8 +9,9 @@ class StartGame
   #  user_ready?
   #  comp_ship_placement
   #  cpu_board.board_render(true)
-    player_ship_placement
-    player_board.board_render(true)
+  #  player_ship_placement
+  #  player_board.board_render(true)
+  #display_board
   end
 
   private
@@ -91,6 +92,20 @@ class StartGame
   end
 
   def turn
-    #
+    display_board
+    until user_input = valid_coordinate?
+      puts "Please enter 'p' to play or 'q' to quit."
+      user_input = gets.chomp
+    end
   end
+
+  def display_board
+    puts "=============COMPUTER BOARD============="
+    cpu_board.board_render
+
+    puts"==============PLAYER BOARD=============="
+    player_board.board_render(true)
+  end
+
+
 end
