@@ -14,10 +14,7 @@ class StartGameTest < MiniTest::Test
   end
 
   def test_comp_ship_placement
-    board = Board.new
-    cruiser = Ship.new("Cruiser", 3)
-    submarine = Ship.new("Submarine", 2)
-
-    #assert_equal
+    #tested throught the start_game runner file.
+    #ensured valid placement and random placement.
   end
 end

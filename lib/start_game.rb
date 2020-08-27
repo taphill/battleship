@@ -38,14 +38,17 @@ class StartGame
       cruiser_coordinates = board.cells.keys.sample(3)
     end
 
+    board.place(cruiser, cruiser_coordinates)
+
     submarine_coordinates = board.cells.keys.sample(2)
     until board.valid_placement?(submarine, submarine_coordinates)
       submarine_coordinates = board.cells.keys.sample(2)
     end
 
-    board.place(cruiser, cruiser_coordinates)
     board.place(submarine, submarine_coordinates)
   end
+
+
 
   def turn
 
