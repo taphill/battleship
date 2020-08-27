@@ -27,6 +27,27 @@ class BoardTest < MiniTest::Test
     assert_equal false, board.valid_coordinate?("A22")
   end
 
+  def test_cant_be_fired_at_twice
+    board = Board.new
+    cruiser = Ship.new("Cruiser", 3)
+
+    board.place(cruiser, ["A1", "A2", "A3"])
+
+    assert_equal true, board.valid_coordinate?("A1")
+    board.cells["A1"].fire_upon
+    assert_equal false, board.valid_coordinate?("A1")
+  end
+
+  def test_cell_fired_at
+    board = Board.new
+    cruiser = Ship.new("Cruiser", 3)
+
+    board.place(cruiser, ["A1", "A2", "A3"])
+
+    board.cells["A1"].fire_upon
+    assert_equal true, board.cell_fired_at?("A1")
+  end
+
   def test_valid_placement_length
     board = Board.new
     cruiser = Ship.new("Cruiser", 3)
