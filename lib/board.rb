@@ -25,6 +25,7 @@ class Board
   def valid_coordinate?(coordinate)
     return false unless cells.key?(coordinate)
     return false if cells[coordinate].fired_upon?
+
     cells.key?(coordinate)
   end
 
@@ -35,15 +36,10 @@ class Board
 
     split_coordinates = split_coordinates(coordinates)
 
-    if value_at_0_same?(split_coordinates) && value_at_1_same?(coordinates)
-      false
-    elsif value_at_0_same?(split_coordinates)
-      consecutive?(flatten_array(split_coordinates, 1))
-    elsif value_at_1_same?(split_coordinates)
-      consecutive?(flatten_array(split_coordinates, 0))
-    else
-      false
-    end
+    return true if value_at_0_same?(split_coordinates) && consecutive?(split_coordinates, 1)
+    return true if value_at_1_same?(split_coordinates) && consecutive?(split_coordinates, 0)
+
+    return false
   end
 
   def place(ship, coordinates)
@@ -58,6 +54,10 @@ class Board
     print "B #{cells['B1'].render(show_ship)} #{cells['B2'].render(show_ship)} #{cells['B3'].render(show_ship)} #{cells['B4'].render(show_ship)} \n"
     print "C #{cells['C1'].render(show_ship)} #{cells['C2'].render(show_ship)} #{cells['C3'].render(show_ship)} #{cells['C4'].render(show_ship)} \n"
     print "D #{cells['D1'].render(show_ship)} #{cells['D2'].render(show_ship)} #{cells['D3'].render(show_ship)} #{cells['D4'].render(show_ship)} \n"
+  end
+
+  def cell_render(cell)
+    cells[cell].render
   end
 
   def cell_fired_at?(coordinate)
@@ -90,14 +90,12 @@ class Board
     end
   end
 
-  def flatten_array(coordinates, index)
-    coordinates.map do |coordinate|
+  def consecutive?(coordinates, index)
+    flattened_array = coordinates.map do |coordinate|
       coordinate[index]
     end
-  end
 
-  def consecutive?(array)
-    array.each_cons(2).all? do |current_num, next_num|
+    flattened_array.each_cons(2).all? do |current_num, next_num|
       next_num == current_num + 1
     end
   end
