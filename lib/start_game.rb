@@ -4,7 +4,7 @@ class StartGame
   end
 
   def start
-    intro
+    puts "\nWelcome to BATTLESHIP\nEnter 'p' to play. Enter 'q' to quit."
     user_ready?
   end
 
@@ -26,10 +26,6 @@ class StartGame
     player_board = Board.new
 
     setup(cpu_board, player_board)
-  end
-
-  def intro
-    puts "\nWelcome to BATTLESHIP\nEnter 'p' to play. Enter 'q' to quit."
   end
 
   def user_ready?
@@ -72,6 +68,7 @@ class StartGame
     end
 
     player_board.place(player_cruiser, user_input.split)
+    puts "\n"
 
     puts 'Enter the squares for the Submarine (2 spaces):'
     user_input = gets.chomp
@@ -82,24 +79,28 @@ class StartGame
     end
 
     player_board.place(player_submarine, user_input.split)
+
+    puts "\n"
   end
 
   def player_ship_placement_prompt
-    puts 'I have laid out my ships on the grid.'
+    puts "\nI have laid out my ships on the grid."
     puts 'You now need to lay out your two ships.'
     puts 'The Cruiser is three units long and the Submarine is two units long.'
+    puts "\n"
     puts '  1 2 3 4'
     puts 'A . . . .'
     puts 'B . . . .'
     puts 'C . . . .'
     puts 'D . . . .'
+    puts "\n"
   end
 
   def turn
     comp_ship_placement
-    cpu_board.board_render(true)
     player_ship_placement
-    player_board.board_render(true)
+    
+    display_board
 
     until won?
       puts "\nEnter the coordinate for your shot:"
@@ -127,6 +128,7 @@ class StartGame
       cpu_results?(coordinate)
     end
 
+    puts "\n"
     display_board
     who_won_game?
   end
