@@ -23,6 +23,8 @@ class Board
   end
 
   def valid_coordinate?(coordinate)
+    return false unless cells.key?(coordinate)
+    return false if cells[coordinate].fired_upon?
     cells.key?(coordinate)
   end
 
@@ -56,6 +58,12 @@ class Board
     print "B #{cells['B1'].render(show_ship)} #{cells['B2'].render(show_ship)} #{cells['B3'].render(show_ship)} #{cells['B4'].render(show_ship)} \n"
     print "C #{cells['C1'].render(show_ship)} #{cells['C2'].render(show_ship)} #{cells['C3'].render(show_ship)} #{cells['C4'].render(show_ship)} \n"
     print "D #{cells['D1'].render(show_ship)} #{cells['D2'].render(show_ship)} #{cells['D3'].render(show_ship)} #{cells['D4'].render(show_ship)} \n"
+  end
+
+  def cell_fired_at?(coordinate)
+    return false unless cells.key?(coordinate)
+
+    cells[coordinate].fired_upon?
   end
 
   private
