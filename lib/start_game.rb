@@ -1,5 +1,18 @@
 class StartGame
   def initialize(cpu_board, player_board)
+    setup(cpu_board, player_board)
+  end
+
+  def start
+    intro
+    user_ready?
+  end
+
+  private
+
+  attr_reader :cpu_board, :player_board, :player_cruiser, :player_submarine, :cpu_cruiser, :cpu_submarine
+
+  def setup(cpu_board, player_board)
     @cpu_board = cpu_board
     @player_board = player_board
     @player_cruiser = Ship.new('Cruiser', 3)
@@ -8,20 +21,12 @@ class StartGame
     @cpu_submarine = Ship.new('Submarine', 2)
   end
 
-  def start
-    intro
-    user_ready?
+  def reset
+    cpu_board = Board.new
+    player_board = Board.new
 
-#      comp_ship_placement
-#      cpu_board.board_render(true)
-#      player_ship_placement
-#      player_board.board_render(true)
-
+    setup(cpu_board, player_board)
   end
-
-  private
-
-  attr_reader :cpu_board, :player_board, :player_cruiser, :player_submarine, :cpu_cruiser, :cpu_submarine
 
   def intro
     puts "\nWelcome to BATTLESHIP\nEnter 'p' to play. Enter 'q' to quit."
@@ -40,9 +45,6 @@ class StartGame
   end
 
   def comp_ship_placement
-#    cpu_cruiser = Ship.new('Cruiser', 3)
-#    cpu_submarine = Ship.new('Submarine', 2)
-
     cruiser_coordinates = cpu_board.cells.keys.sample(3)
     until cpu_board.valid_placement?(cpu_cruiser, cruiser_coordinates)
       cruiser_coordinates = cpu_board.cells.keys.sample(3)
@@ -60,9 +62,6 @@ class StartGame
 
   def player_ship_placement
     player_ship_placement_prompt
-
-#    player_cruiser = Ship.new('Cruiser', 3)
-#    player_submarine = Ship.new('Submarine', 2)
 
     puts 'Enter the squares for the Cruiser (3 spaces):'
     user_input = gets.chomp
@@ -101,6 +100,7 @@ class StartGame
     cpu_board.board_render(true)
     player_ship_placement
     player_board.board_render(true)
+
     until won?
       puts "\nEnter the coordinate for your shot:"
 
@@ -126,17 +126,15 @@ class StartGame
       player_results?(user_input)
       cpu_results?(coordinate)
     end
+
     display_board
     who_won_game?
-    puts "Would you like to play again?"
-    user_ready?
-
   end
 
   def display_board
     puts "=============COMPUTER BOARD============="
     cpu_board.board_render
-
+    puts "\n"
     puts"==============PLAYER BOARD=============="
     player_board.board_render(true)
   end
@@ -177,7 +175,9 @@ class StartGame
     else
       puts "Uh oh, something went wrong!"
     end
+
+    reset
+    puts "\nWould you like to play again?\nEnter 'p' to play. Enter 'q' to quit."
+    user_ready?
   end
-
-
 end
