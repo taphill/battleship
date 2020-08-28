@@ -110,7 +110,7 @@ class StartGame
           puts "You've already fired at this coordinate....please enter a new one:"
           user_input = gets.chomp
         else
-          puts "Please enter a valid coordinate:"
+          puts 'Please enter a valid coordinate:'
           user_input = gets.chomp
         end
       end
@@ -132,10 +132,10 @@ class StartGame
   end
 
   def display_board
-    puts "=============COMPUTER BOARD============="
+    puts '=============COMPUTER BOARD============='
     cpu_board.board_render
     puts "\n"
-    puts"==============PLAYER BOARD=============="
+    puts '==============PLAYER BOARD=============='
     player_board.board_render(true)
   end
 
@@ -144,36 +144,32 @@ class StartGame
   end
 
   def player_results?(coordinate)
-    if cpu_board.cell_render(coordinate) == "X"
+    if cpu_board.cell_render(coordinate) == 'X'
       puts "\nYour shot on #{coordinate} sunk a ship!"
-    elsif cpu_board.cell_render(coordinate) == "M"
+    elsif cpu_board.cell_render(coordinate) == 'M'
       puts "\nYour shot on #{coordinate} was a miss."
-    elsif cpu_board.cell_render(coordinate) == "H"
+    elsif cpu_board.cell_render(coordinate) == 'H'
       puts "\nYour shot on #{coordinate} was a hit!"
-    else
-      nil
     end
   end
 
   def cpu_results?(coordinate)
-    if player_board.cell_render(coordinate) == "X"
+    if player_board.cell_render(coordinate) == 'X'
       puts "My shot on #{coordinate} sunk a ship!\n"
-    elsif player_board.cell_render(coordinate) == "M"
+    elsif player_board.cell_render(coordinate) == 'M'
       puts "My shot on #{coordinate} was a miss.\n"
-    elsif player_board.cell_render(coordinate) == "H"
+    elsif player_board.cell_render(coordinate) == 'H'
       puts "My shot on #{coordinate} was a hit!\n"
-    else
-      nil
     end
   end
 
   def who_won_game?
-    if (player_cruiser.sunk? && player_submarine.sunk?)
+    if player_cruiser.sunk? && player_submarine.sunk?
       puts "\n\nI won!"
-    elsif (cpu_cruiser.sunk? && cpu_submarine.sunk?)
+    elsif cpu_cruiser.sunk? && cpu_submarine.sunk?
       puts "\n\nYou won!"
     else
-      puts "Uh oh, something went wrong!"
+      puts 'Uh oh, something went wrong!'
     end
 
     reset
