@@ -48,6 +48,23 @@ class BoardTest < MiniTest::Test
     assert_equal true, board.cell_fired_at?("A1")
   end
 
+  def test_it_can_render_cell
+    board = Board.new
+    cruiser = Ship.new("Cruiser", 3)
+
+    board.place(cruiser, ["A1", "A2", "A3"])
+
+    board.cells["A1"].fire_upon
+    board.cells["B3"].fire_upon
+    assert_equal "H", board.cell_render("A1")
+    assert_equal "M", board.cell_render("B3")
+
+    board.cells["A2"].fire_upon
+    board.cells["A3"].fire_upon
+    assert_equal "X", board.cell_render("A2")
+    assert_equal "X", board.cell_render("A3")
+  end
+
   def test_valid_placement_length
     board = Board.new
     cruiser = Ship.new("Cruiser", 3)

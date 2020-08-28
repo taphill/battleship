@@ -144,11 +144,11 @@ class StartGame
   end
 
   def player_results?(coordinate)
-    if cpu_board.cells[coordinate].render == "X"
+    if cpu_board.cell_render(coordinate) == "X"
       puts "\nYour shot on #{coordinate} sunk a ship!"
-    elsif cpu_board.cells[coordinate].render == "M"
+    elsif cpu_board.cell_render(coordinate) == "M"
       puts "\nYour shot on #{coordinate} was a miss."
-    elsif cpu_board.cells[coordinate].render == "H"
+    elsif cpu_board.cell_render(coordinate) == "H"
       puts "\nYour shot on #{coordinate} was a hit!"
     else
       nil
@@ -156,11 +156,11 @@ class StartGame
   end
 
   def cpu_results?(coordinate)
-    if player_board.cells[coordinate].render == "X"
+    if player_board.cell_render(coordinate) == "X"
       puts "My shot on #{coordinate} sunk a ship!\n"
-    elsif player_board.cells[coordinate].render == "M"
+    elsif player_board.cell_render(coordinate) == "M"
       puts "My shot on #{coordinate} was a miss.\n"
-    elsif player_board.cells[coordinate].render == "H"
+    elsif player_board.cell_render(coordinate) == "H"
       puts "My shot on #{coordinate} was a hit!\n"
     else
       nil
