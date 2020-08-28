@@ -36,15 +36,10 @@ class Board
 
     split_coordinates = split_coordinates(coordinates)
 
-    if value_at_0_same?(split_coordinates) && value_at_1_same?(coordinates)
-      false
-    elsif value_at_0_same?(split_coordinates)
-      consecutive?(flatten_array(split_coordinates, 1))
-    elsif value_at_1_same?(split_coordinates)
-      consecutive?(flatten_array(split_coordinates, 0))
-    else
-      false
-    end
+    return true if value_at_0_same?(split_coordinates) && consecutive?(split_coordinates, 1)
+    return true if value_at_1_same?(split_coordinates) && consecutive?(split_coordinates, 0)
+
+    return false
   end
 
   def place(ship, coordinates)
@@ -95,14 +90,12 @@ class Board
     end
   end
 
-  def flatten_array(coordinates, index)
-    coordinates.map do |coordinate|
+  def consecutive?(coordinates, index)
+    flattened_array = coordinates.map do |coordinate|
       coordinate[index]
     end
-  end
 
-  def consecutive?(array)
-    array.each_cons(2).all? do |current_num, next_num|
+    flattened_array.each_cons(2).all? do |current_num, next_num|
       next_num == current_num + 1
     end
   end
