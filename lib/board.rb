@@ -61,6 +61,8 @@ class Board
   end
 
   def cell_fired_at?(coordinate)
+    return false unless cells.key?(coordinate)
+
     cells[coordinate].fired_upon?
   end
 
