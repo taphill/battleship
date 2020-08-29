@@ -1,25 +1,16 @@
 class Board
   attr_reader :cells
 
-  def initialize
-    @cells = {
-      'A1' => Cell.new('A1'),
-      'A2' => Cell.new('A2'),
-      'A3' => Cell.new('A3'),
-      'A4' => Cell.new('A4'),
-      'B1' => Cell.new('B1'),
-      'B2' => Cell.new('B2'),
-      'B3' => Cell.new('B3'),
-      'B4' => Cell.new('B4'),
-      'C1' => Cell.new('C1'),
-      'C2' => Cell.new('C2'),
-      'C3' => Cell.new('C3'),
-      'C4' => Cell.new('C4'),
-      'D1' => Cell.new('D1'),
-      'D2' => Cell.new('D2'),
-      'D3' => Cell.new('D3'),
-      'D4' => Cell.new('D4')
-    }
+  def initialize(rows, columns)
+    @rows = rows
+    @columns = columns
+    @cells = {}
+  end
+
+  def create_cells
+    get_keys.each do |key|
+      cells[key] = Cell.new(key)
+    end
   end
 
   def valid_coordinate?(coordinate)
@@ -49,11 +40,20 @@ class Board
   end
 
   def board_render(show_ship = false)
-    print "  1 2 3 4 \n"
-    print "A #{cells['A1'].render(show_ship)} #{cells['A2'].render(show_ship)} #{cells['A3'].render(show_ship)} #{cells['A4'].render(show_ship)} \n"
-    print "B #{cells['B1'].render(show_ship)} #{cells['B2'].render(show_ship)} #{cells['B3'].render(show_ship)} #{cells['B4'].render(show_ship)} \n"
-    print "C #{cells['C1'].render(show_ship)} #{cells['C2'].render(show_ship)} #{cells['C3'].render(show_ship)} #{cells['C4'].render(show_ship)} \n"
-    print "D #{cells['D1'].render(show_ship)} #{cells['D2'].render(show_ship)} #{cells['D3'].render(show_ship)} #{cells['D4'].render(show_ship)} \n"
+    print ' '
+    ('1'..'26').to_a[0, columns].each do |number|
+      print ' ' + number
+    end
+
+    print "\n"
+
+    ('A'..'Z').to_a[0, rows].each do |letter|
+      print letter + ' '
+      cells.each do |coordinate, cell|
+        print "#{cell.render(show_ship)} " if coordinate[0] == letter
+      end
+      print "\n"
+    end
   end
 
   def cell_render(cell)
@@ -67,6 +67,22 @@ class Board
   end
 
   private
+ 
+  attr_writer :cells
+  attr_reader :rows, :columns
+
+  def get_keys
+    letters = ('A'..'Z').to_a[0, rows].flat_map { |letter| [letter] * columns }
+    numbers = (('1'..'26').to_a[0, columns]) * columns
+
+    keys = letters.map do |letter|
+      numbers.map do |number|
+        letter + number
+      end
+    end
+
+    keys.flatten.uniq
+  end
 
   def split_coordinates(coordinates)
     coordinates.map do |coordinate|
