@@ -42,7 +42,7 @@ class Board
   def board_render(show_ship = false)
     print ' '
     ('1'..'26').to_a[0, columns].each do |number|
-      print ' ' + number
+      print '  ' + number
     end
 
     print "\n"
@@ -50,7 +50,11 @@ class Board
     ('A'..'Z').to_a[0, rows].each do |letter|
       print letter + ' '
       cells.each do |coordinate, cell|
-        print "#{cell.render(show_ship)} " if coordinate[0] == letter
+        if coordinate[0] == letter && coordinate[1..2].to_i > 10
+          print "  #{cell.render(show_ship)} "
+        elsif coordinate[0] == letter
+          print " #{cell.render(show_ship)} "
+        end
       end
       print "\n"
     end
@@ -68,7 +72,6 @@ class Board
 
   private
  
-  attr_writer :cells
   attr_reader :rows, :columns
 
   def get_keys

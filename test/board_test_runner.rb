@@ -4,7 +4,7 @@ require './lib/board'
 
 
 
-board = Board.new(26, 26)
+board = Board.new(26, 20)
 cruiser = Ship.new("Cruiser", 3)
 submarine = Ship.new("Submarine", 2)
 
@@ -22,5 +22,8 @@ board.cells['B3'].fire_upon
 board.cells['B4'].fire_upon
 
 board.cells['E4'].fire_upon
+
+board.cells['G19'].fire_upon
+
 
 board.board_render(true)
