@@ -8,8 +8,8 @@ require './lib/start_game'
 class StartGameTest < MiniTest::Test
 
   def test_in_exists
-    cpu_board = Board.new
-    player_board = Board.new
+    cpu_board = Board.new(6, 6)
+    player_board = Board.new(6, 6)
 
     game = StartGame.new(cpu_board, player_board)
 

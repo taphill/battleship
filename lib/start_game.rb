@@ -83,23 +83,45 @@ class StartGame
     puts "\n"
   end
 
+  def board_size
+    puts "You get to choose the size of the board."
+    puts "\nThe minimum size is 4 x 4, and the maximum is 26 x 26."
+    puts "\nWhat height do you want the board?"
+
+    user_input = gets.chomp.to_i
+    until user_input >= 4 && user_input <= 26
+      puts "Sorry, that's not within the guidelines. Please try again:"
+      user_input = gets.chomp.to_i
+    end
+    cpu_board.columns = user_input
+    player_board.columns = user_input
+
+    puts "\nAnd what width do you want the board?"
+    user_input = gets.chomp.to_i
+    until user_input >= 4 && user_input <= 26
+      puts "Sorry, that's not within the guidelines. Please try again:"
+      user_input = gets.chomp.to_i
+    end
+    cpu_board.rows = user_input
+    player_board.rows = user_input
+
+    cpu_board.create_cells
+    player_board.create_cells
+  end
+
   def player_ship_placement_prompt
     puts "\nI have laid out my ships on the grid."
     puts 'You now need to lay out your two ships.'
     puts 'The Cruiser is three units long and the Submarine is two units long.'
     puts "\n"
-    puts '  1 2 3 4'
-    puts 'A . . . .'
-    puts 'B . . . .'
-    puts 'C . . . .'
-    puts 'D . . . .'
-    puts "\n"
+    player_board.board_render
   end
 
   def turn
+    board_size
     comp_ship_placement
     player_ship_placement
-    
+
     display_board
 
     until won?

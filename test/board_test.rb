@@ -6,19 +6,21 @@ require './lib/board'
 
 class BoardTest < MiniTest::Test
   def test_it_exists
-    board = Board.new
+    board = Board.new(4, 4)
 
     assert_instance_of Board, board
   end
 
   def test_it_has_attributes
-    board = Board.new
+    board = Board.new(4, 4)
 
     assert_instance_of Hash, board.cells
   end
 
   def test_valid_coordinate?
-    board = Board.new
+    board = Board.new(4, 4)
+    board.create_cells
+    board.board_render
 
     assert_equal true, board.valid_coordinate?("A1")
     assert_equal true, board.valid_coordinate?("D4")
@@ -28,7 +30,9 @@ class BoardTest < MiniTest::Test
   end
 
   def test_cant_be_fired_at_twice
-    board = Board.new
+    board = Board.new(4, 4)
+    board.create_cells
+    board.board_render
     cruiser = Ship.new("Cruiser", 3)
 
     board.place(cruiser, ["A1", "A2", "A3"])
@@ -39,7 +43,9 @@ class BoardTest < MiniTest::Test
   end
 
   def test_cell_fired_at
-    board = Board.new
+    board = Board.new(4, 4)
+    board.create_cells
+    board.board_render
     cruiser = Ship.new("Cruiser", 3)
 
     board.place(cruiser, ["A1", "A2", "A3"])
@@ -49,7 +55,9 @@ class BoardTest < MiniTest::Test
   end
 
   def test_it_can_render_cell
-    board = Board.new
+    board = Board.new(4, 4)
+    board.create_cells
+    board.board_render
     cruiser = Ship.new("Cruiser", 3)
 
     board.place(cruiser, ["A1", "A2", "A3"])
@@ -66,7 +74,9 @@ class BoardTest < MiniTest::Test
   end
 
   def test_valid_placement_length
-    board = Board.new
+    board = Board.new(4, 4)
+    board.create_cells
+    board.board_render
     cruiser = Ship.new("Cruiser", 3)
     submarine = Ship.new("Submarine", 2)
 
@@ -77,7 +87,9 @@ class BoardTest < MiniTest::Test
   end
 
   def test_coordinates_are_consecutive
-    board = Board.new
+    board = Board.new(4, 4)
+    board.create_cells
+    board.board_render
     cruiser = Ship.new("Cruiser", 3)
     submarine = Ship.new("Submarine", 2)
 
@@ -92,7 +104,9 @@ class BoardTest < MiniTest::Test
   end
 
   def test_coordinates_cant_be_diagonal
-    board = Board.new
+    board = Board.new(4, 4)
+    board.create_cells
+    board.board_render
     cruiser = Ship.new("Cruiser", 3)
     submarine = Ship.new("Submarine", 2)
 
@@ -101,7 +115,9 @@ class BoardTest < MiniTest::Test
   end
 
   def test_it_can_place_ships
-    board = Board.new
+    board = Board.new(4, 4)
+    board.create_cells
+    board.board_render
     cruiser = Ship.new("Cruiser", 3)
     submarine = Ship.new("Submarine", 2)
 
@@ -121,7 +137,9 @@ class BoardTest < MiniTest::Test
   end
 
   def test_overlapping_ships
-    board = Board.new
+    board = Board.new(4, 4)
+    board.create_cells
+    board.board_render
     cruiser = Ship.new("Cruiser", 3)
 
     board.place(cruiser, ["A1", "A2", "A3"])
@@ -133,7 +151,7 @@ class BoardTest < MiniTest::Test
   end
 
   def test_ships_off_board
-    board = Board.new
+    board = Board.new(4, 4)
     cruiser = Ship.new("Cruiser", 3)
 
     assert_equal false, board.valid_placement?(cruiser, ["A4", "A5", "A6"])

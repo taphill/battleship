@@ -1,25 +1,17 @@
 class Board
   attr_reader :cells
+  attr_writer :rows, :columns
 
-  def initialize
-    @cells = {
-      'A1' => Cell.new('A1'),
-      'A2' => Cell.new('A2'),
-      'A3' => Cell.new('A3'),
-      'A4' => Cell.new('A4'),
-      'B1' => Cell.new('B1'),
-      'B2' => Cell.new('B2'),
-      'B3' => Cell.new('B3'),
-      'B4' => Cell.new('B4'),
-      'C1' => Cell.new('C1'),
-      'C2' => Cell.new('C2'),
-      'C3' => Cell.new('C3'),
-      'C4' => Cell.new('C4'),
-      'D1' => Cell.new('D1'),
-      'D2' => Cell.new('D2'),
-      'D3' => Cell.new('D3'),
-      'D4' => Cell.new('D4')
-    }
+  def initialize(rows = 4, columns = 4)
+    @rows = rows
+    @columns = columns
+    @cells = {}
+  end
+
+  def create_cells
+    get_keys.each do |key|
+      cells[key] = Cell.new(key)
+    end
   end
 
   def valid_coordinate?(coordinate)
@@ -30,9 +22,9 @@ class Board
   end
 
   def valid_placement?(ship, coordinates)
-    return false unless ship.length == coordinates.length
     return false unless on_playing_board?(coordinates)
     return false if overlapping?(coordinates)
+    return false unless ship.length == coordinates.length
 
     split_coordinates = split_coordinates(coordinates)
 
@@ -49,11 +41,24 @@ class Board
   end
 
   def board_render(show_ship = false)
-    print "  1 2 3 4 \n"
-    print "A #{cells['A1'].render(show_ship)} #{cells['A2'].render(show_ship)} #{cells['A3'].render(show_ship)} #{cells['A4'].render(show_ship)} \n"
-    print "B #{cells['B1'].render(show_ship)} #{cells['B2'].render(show_ship)} #{cells['B3'].render(show_ship)} #{cells['B4'].render(show_ship)} \n"
-    print "C #{cells['C1'].render(show_ship)} #{cells['C2'].render(show_ship)} #{cells['C3'].render(show_ship)} #{cells['C4'].render(show_ship)} \n"
-    print "D #{cells['D1'].render(show_ship)} #{cells['D2'].render(show_ship)} #{cells['D3'].render(show_ship)} #{cells['D4'].render(show_ship)} \n"
+    print ' '
+    get_numbers.each do |number|
+      print '  ' + number
+    end
+
+    print "\n"
+
+    get_letters.each do |letter|
+      print letter + ' '
+      cells.each do |coordinate, cell|
+        if coordinate[0] == letter && coordinate[1..2].to_i > 10
+          print "  #{cell.render(show_ship)} "
+        elsif coordinate[0] == letter
+          print " #{cell.render(show_ship)} "
+        end
+      end
+      print "\n"
+    end
   end
 
   def cell_render(cell)
@@ -68,9 +73,34 @@ class Board
 
   private
 
+  attr_reader :rows, :columns
+
+  def get_keys
+    letters = get_letters.flat_map { |letter| [letter] * columns }
+    numbers = get_numbers * columns
+
+    keys = letters.map do |letter|
+      numbers.map do |number|
+        letter + number
+      end
+    end
+
+    keys.flatten.uniq
+  end
+
+  def get_letters
+    ('A'..'Z').to_a[0, rows]
+  end
+
+  def get_numbers
+    ('1'..'26').to_a[0, columns]
+  end
+
   def split_coordinates(coordinates)
     coordinates.map do |coordinate|
-      coordinate.split('').map(&:ord)
+      letter = coordinate[0].ord
+      number = coordinate[1..2].to_i.ord
+      [letter, number]
     end
   end
 
