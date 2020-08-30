@@ -41,13 +41,13 @@ class Board
 
   def board_render(show_ship = false)
     print ' '
-    ('1'..'26').to_a[0, columns].each do |number|
+    get_numbers.each do |number|
       print '  ' + number
     end
 
     print "\n"
 
-    ('A'..'Z').to_a[0, rows].each do |letter|
+    get_letters.each do |letter|
       print letter + ' '
       cells.each do |coordinate, cell|
         if coordinate[0] == letter && coordinate[1..2].to_i > 10
@@ -75,8 +75,8 @@ class Board
   attr_reader :rows, :columns
 
   def get_keys
-    letters = ('A'..'Z').to_a[0, rows].flat_map { |letter| [letter] * columns }
-    numbers = (('1'..'26').to_a[0, columns]) * columns
+    letters = get_letters.flat_map { |letter| [letter] * columns }
+    numbers = get_numbers * columns
 
     keys = letters.map do |letter|
       numbers.map do |number|
@@ -85,6 +85,14 @@ class Board
     end
 
     keys.flatten.uniq
+  end
+
+  def get_letters
+    ('A'..'Z').to_a[0, rows]
+  end
+
+  def get_numbers
+    ('1'..'26').to_a[0, columns]
   end
 
   def split_coordinates(coordinates)
