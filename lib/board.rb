@@ -98,7 +98,9 @@ class Board
 
   def split_coordinates(coordinates)
     coordinates.map do |coordinate|
-      coordinate.split('').map(&:ord)
+      one = coordinate[0].ord
+      two = coordinate[1..2].to_i.ord
+      [one, two]
     end
   end
 
