@@ -21,9 +21,9 @@ class Board
   end
 
   def valid_placement?(ship, coordinates)
-    return false unless ship.length == coordinates.length
     return false unless on_playing_board?(coordinates)
     return false if overlapping?(coordinates)
+    return false unless ship.length == coordinates.length
 
     split_coordinates = split_coordinates(coordinates)
 
@@ -71,7 +71,7 @@ class Board
   end
 
   private
- 
+
   attr_reader :rows, :columns
 
   def get_keys
