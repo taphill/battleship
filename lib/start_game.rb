@@ -157,7 +157,7 @@ class StartGame
 
   def display_board
     puts '=============COMPUTER BOARD============='
-    cpu_board.board_render(true)
+    cpu_board.board_render
     puts "\n"
     puts '==============PLAYER BOARD=============='
     player_board.board_render(true)
