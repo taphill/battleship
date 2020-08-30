@@ -1,7 +1,8 @@
 class Board
   attr_reader :cells
+  attr_writer :rows, :columns
 
-  def initialize(rows, columns)
+  def initialize(rows = 4, columns = 4)
     @rows = rows
     @columns = columns
     @cells = {}
