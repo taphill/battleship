@@ -4,7 +4,8 @@ class StartGame
   end
 
   def start
-    puts "\nWelcome to BATTLESHIP\nEnter 'p' to play. Enter 'q' to quit."
+    puts "\nWelcome to BATTLESHIP\n\nEnter 'p' to play. Enter 'q' to quit."
+    print "> "
     user_ready?
   end
 
@@ -33,6 +34,7 @@ class StartGame
 
     until user_input.downcase == 'p' || user_input.downcase == 'q'
       puts "Please enter 'p' to play or 'q' to quit."
+      print "> "
       user_input = gets.chomp
     end
 
@@ -59,11 +61,13 @@ class StartGame
   def player_ship_placement
     player_ship_placement_prompt
 
-    puts 'Enter the squares for the Cruiser (3 spaces):'
+    puts "\nEnter the squares for the Cruiser (3 spaces):"
+    print "> "
     user_input = gets.chomp
 
     until player_board.valid_placement?(player_cruiser, user_input.split)
       puts 'Sorry, those are invalid coordinates. Please try again:'
+      print "> "
       user_input = gets.chomp
     end
 
@@ -71,10 +75,12 @@ class StartGame
     puts "\n"
 
     puts 'Enter the squares for the Submarine (2 spaces):'
+    print "> "
     user_input = gets.chomp
 
     until player_board.valid_placement?(player_submarine, user_input.split)
       puts 'Sorry, those are invalid coordinates. Please try again:'
+      print "> "
       user_input = gets.chomp
     end
 
@@ -84,26 +90,38 @@ class StartGame
   end
 
   def board_size
-    puts "You get to choose the size of the board."
-    puts "\nThe minimum size is 4 x 4, and the maximum is 26 x 26."
-    puts "\nWhat height do you want the board?"
+    puts "\nRULES OF THE GAME:"
+    puts "\n  - You get to choose the size of the board, and the number, name and length of the ships you want."
+    puts "  - The minimum board size is 4x4, and the maximum is 26x26."
+    puts "  - The minimum ship size is 1 unit and the maximum is 6 units."
+    puts "  - You are able to potentially create up to 6 ships in total."
+    puts "  - If you choose a board size less than 6x6 then you will only be allowed to use the default ships."
+    puts "  - The default ships are the 3 unit Cruiser and 2 unit Submarine."
+    puts "\nHow many rows do you want for the board?"
+    print "> "
 
     user_input = gets.chomp.to_i
     until user_input >= 4 && user_input <= 26
       puts "Sorry, that's not within the guidelines. Please try again:"
+      print "> "
       user_input = gets.chomp.to_i
     end
-    cpu_board.columns = user_input
-    player_board.columns = user_input
 
-    puts "\nAnd what width do you want the board?"
-    user_input = gets.chomp.to_i
-    until user_input >= 4 && user_input <= 26
-      puts "Sorry, that's not within the guidelines. Please try again:"
-      user_input = gets.chomp.to_i
-    end
     cpu_board.rows = user_input
     player_board.rows = user_input
+
+    puts "\nAnd how many columns do you want for the board?"
+    print "> "
+
+    user_input = gets.chomp.to_i
+    until user_input >= 4 && user_input <= 26
+      puts "Sorry, that's not within the guidelines. Please try again:"
+      print "> "
+      user_input = gets.chomp.to_i
+    end
+
+    cpu_board.columns = user_input
+    player_board.columns = user_input
 
     cpu_board.create_cells
     player_board.create_cells
@@ -113,6 +131,7 @@ class StartGame
     puts "\nI have laid out my ships on the grid."
     puts 'You now need to lay out your two ships.'
     puts 'The Cruiser is three units long and the Submarine is two units long.'
+    puts 'Make sure there is a space between each coordinate otherwise it will be considered invalid.'
     puts "\n"
     player_board.board_render
   end
@@ -126,14 +145,17 @@ class StartGame
 
     until won?
       puts "\nEnter the coordinate for your shot:"
+      print "> "
 
       user_input = gets.chomp
       until cpu_board.valid_coordinate?(user_input)
         if cpu_board.cell_fired_at?(user_input)
           puts "You've already fired at this coordinate....please enter a new one:"
+          print "> "
           user_input = gets.chomp
         else
           puts 'Please enter a valid coordinate:'
+          print "> "
           user_input = gets.chomp
         end
       end
@@ -157,7 +179,7 @@ class StartGame
 
   def display_board
     puts '=============COMPUTER BOARD============='
-    cpu_board.board_render
+    cpu_board.board_render(true)
     puts "\n"
     puts '==============PLAYER BOARD=============='
     player_board.board_render(true)
@@ -198,6 +220,7 @@ class StartGame
 
     reset
     puts "\nWould you like to play again?\nEnter 'p' to play. Enter 'q' to quit."
+    print "> "
     user_ready?
   end
 end
