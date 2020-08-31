@@ -1,6 +1,6 @@
 class Board
+  attr_accessor :rows, :columns
   attr_reader :cells
-  attr_writer :rows, :columns
 
   def initialize(rows = 4, columns = 4)
     @rows = rows
@@ -72,8 +72,6 @@ class Board
   end
 
   private
-
-  attr_reader :rows, :columns
 
   def get_keys
     letters = get_letters.flat_map { |letter| [letter] * columns }
