@@ -109,7 +109,7 @@ class StartGame
       print "> "
       size = gets.chomp.to_i
 
-      until size >= 1 && size <=4
+      until size >= 1 && size <= 4
         puts "\nPlease enter a number between 1 and 4"
         print "> "
         size = gets.chomp.to_i

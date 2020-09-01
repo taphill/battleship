@@ -28,8 +28,8 @@ class Board
 
     split_coordinates = split_coordinates(coordinates)
 
-    return true if value_at_0_same?(split_coordinates) && consecutive?(split_coordinates, 1)
-    return true if value_at_1_same?(split_coordinates) && consecutive?(split_coordinates, 0)
+    return true if same_row?(split_coordinates) && consecutive?(split_coordinates, 1)
+    return true if same_column?(split_coordinates) && consecutive?(split_coordinates, 0)
 
     return false
   end
@@ -97,12 +97,12 @@ class Board
   def split_coordinates(coordinates)
     coordinates.map do |coordinate|
       letter = coordinate[0].ord
-      number = coordinate[1..2].to_i.ord
+      number = coordinate[1..2].to_i
       [letter, number]
     end
   end
 
-  def value_at_0_same?(coordinates)
+  def same_row?(coordinates)
     value = coordinates[0][0]
 
     coordinates.all? do |coordinate|
@@ -110,7 +110,7 @@ class Board
     end
   end
 
-  def value_at_1_same?(coordinates)
+  def same_column?(coordinates)
     value = coordinates[0][1]
 
     coordinates.all? do |coordinate|
