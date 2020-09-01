@@ -45,7 +45,7 @@ class StartGame
     puts "\n  - You get to choose the size of the board, and the number, name and length of the ships you want."
     puts "  - The minimum board size is 4x4, and the maximum is 26x26."
     puts "  - The minimum ship size is 1 unit and the maximum is 4 units."
-    puts "  - You are able to potentially create up to 6 ships in total."
+    puts "  - You may potentially create up to 6 ships in total."
     puts "  - If you choose a board size less than 6 rows OR 6 columns then you will only be allowed to use the default ships."
     puts "  - The default ships are the 3 unit Cruiser and 2 unit Submarine."
     puts "\nHow many rows do you want for the board?"
@@ -91,7 +91,7 @@ class StartGame
     print "> "
     user_input = gets.chomp.to_i
 
-    until user_input >= 1 && user_input <=4
+    until user_input >= 1 && user_input <= 6
       puts "\nPlease enter a number between 1 and 4"
       print "> "
       user_input = gets.chomp.to_i
@@ -204,7 +204,7 @@ class StartGame
 
   def display_board
     puts '=============COMPUTER BOARD============='
-    cpu_board.board_render
+    cpu_board.board_render(true)
     puts "\n"
     puts '==============PLAYER BOARD=============='
     player_board.board_render(true)
@@ -214,10 +214,12 @@ class StartGame
     players_sunk = player_ships.all? do |ship|
       ship.sunk?
     end
+
     cpu_sunk = cpu_ships.all? do |ship|
       ship.sunk?
     end
-    (players_sunk) || (cpu_sunk)
+
+    players_sunk || cpu_sunk
   end
 
   def player_results?(coordinate)
@@ -244,10 +246,14 @@ class StartGame
     players_sunk = player_ships.all? do |ship|
       ship.sunk?
     end
+
     cpu_sunk = cpu_ships.all? do |ship|
       ship.sunk?
     end
-    if players_sunk
+
+    if players_sunk && cpu_sunk
+      puts "\n\nWHOA...we tied"
+    elsif players_sunk
       puts "\n\nI won!"
     elsif cpu_sunk
       puts "\n\nYou won!"
