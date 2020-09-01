@@ -4,21 +4,20 @@ class StartGame
   end
 
   def start
-    puts "\nWelcome to BATTLESHIP\nEnter 'p' to play. Enter 'q' to quit."
+    puts "\nWelcome to BATTLESHIP\n\nEnter 'p' to play. Enter 'q' to quit."
+    print "> "
     user_ready?
   end
 
   private
 
-  attr_reader :cpu_board, :player_board, :player_cruiser, :player_submarine, :cpu_cruiser, :cpu_submarine
+  attr_reader :cpu_board, :player_board, :cpu_ships, :player_ships
 
   def setup(cpu_board, player_board)
     @cpu_board = cpu_board
     @player_board = player_board
-    @player_cruiser = Ship.new('Cruiser', 3)
-    @player_submarine = Ship.new('Submarine', 2)
-    @cpu_cruiser = Ship.new('Cruiser', 3)
-    @cpu_submarine = Ship.new('Submarine', 2)
+    @cpu_ships = []
+    @player_ships = []
   end
 
   def reset
@@ -33,6 +32,7 @@ class StartGame
 
     until user_input.downcase == 'p' || user_input.downcase == 'q'
       puts "Please enter 'p' to play or 'q' to quit."
+      print "> "
       user_input = gets.chomp
     end
 
@@ -40,85 +40,129 @@ class StartGame
     return puts "\nGoodbye." if user_input.downcase == 'q'
   end
 
-  def comp_ship_placement
-    cruiser_coordinates = cpu_board.cells.keys.sample(3)
-    until cpu_board.valid_placement?(cpu_cruiser, cruiser_coordinates)
-      cruiser_coordinates = cpu_board.cells.keys.sample(3)
-    end
-
-    cpu_board.place(cpu_cruiser, cruiser_coordinates)
-
-    submarine_coordinates = cpu_board.cells.keys.sample(2)
-    until cpu_board.valid_placement?(cpu_submarine, submarine_coordinates)
-      submarine_coordinates = cpu_board.cells.keys.sample(2)
-    end
-
-    cpu_board.place(cpu_submarine, submarine_coordinates)
-  end
-
-  def player_ship_placement
-    player_ship_placement_prompt
-
-    puts 'Enter the squares for the Cruiser (3 spaces):'
-    user_input = gets.chomp
-
-    until player_board.valid_placement?(player_cruiser, user_input.split)
-      puts 'Sorry, those are invalid coordinates. Please try again:'
-      user_input = gets.chomp
-    end
-
-    player_board.place(player_cruiser, user_input.split)
-    puts "\n"
-
-    puts 'Enter the squares for the Submarine (2 spaces):'
-    user_input = gets.chomp
-
-    until player_board.valid_placement?(player_submarine, user_input.split)
-      puts 'Sorry, those are invalid coordinates. Please try again:'
-      user_input = gets.chomp
-    end
-
-    player_board.place(player_submarine, user_input.split)
-
-    puts "\n"
-  end
-
   def board_size
-    puts "You get to choose the size of the board."
-    puts "\nThe minimum size is 4 x 4, and the maximum is 26 x 26."
-    puts "\nWhat height do you want the board?"
+    puts "\nRULES OF THE GAME:"
+    puts "\n  - You get to choose the size of the board, and the number, name and length of the ships you want."
+    puts "  - The minimum board size is 4x4, and the maximum is 26x26."
+    puts "  - The minimum ship size is 1 unit and the maximum is 4 units."
+    puts "  - You are able to potentially create up to 6 ships in total."
+    puts "  - If you choose a board size less than 6 rows OR 6 columns then you will only be allowed to use the default ships."
+    puts "  - The default ships are the 3 unit Cruiser and 2 unit Submarine."
+    puts "\nHow many rows do you want for the board?"
+    print "> "
 
     user_input = gets.chomp.to_i
     until user_input >= 4 && user_input <= 26
       puts "Sorry, that's not within the guidelines. Please try again:"
+      print "> "
       user_input = gets.chomp.to_i
     end
-    cpu_board.columns = user_input
-    player_board.columns = user_input
 
-    puts "\nAnd what width do you want the board?"
-    user_input = gets.chomp.to_i
-    until user_input >= 4 && user_input <= 26
-      puts "Sorry, that's not within the guidelines. Please try again:"
-      user_input = gets.chomp.to_i
-    end
     cpu_board.rows = user_input
     player_board.rows = user_input
+
+    puts "\nAnd how many columns do you want for the board?"
+    print "> "
+
+    user_input = gets.chomp.to_i
+    until user_input >= 4 && user_input <= 26
+      puts "Sorry, that's not within the guidelines. Please try again:"
+      print "> "
+      user_input = gets.chomp.to_i
+    end
+
+    cpu_board.columns = user_input
+    player_board.columns = user_input
 
     cpu_board.create_cells
     player_board.create_cells
   end
 
+  def create_ships
+    if player_board.rows < 6 || player_board.columns < 6
+      player_ships << Ship.new("Cruiser", 3)
+      player_ships << Ship.new("Submarine", 2)
+      cpu_ships << Ship.new("Cruiser", 3)
+      cpu_ships << Ship.new("Submarine", 2)
+      return puts "\nBased on your board size, the default ships will be used"
+    end
+
+    puts "\nOk...how many ships would you like?"
+    print "> "
+    user_input = gets.chomp.to_i
+
+    until user_input >= 1 && user_input <=4
+      puts "\nPlease enter a number between 1 and 4"
+      print "> "
+      user_input = gets.chomp.to_i
+    end
+
+    loop_num = 0
+
+    until user_input == player_ships.count
+      loop_num += 1
+      puts "\nEnter a name for ship ##{loop_num}"
+      print "> "
+      name = gets.chomp
+
+      puts "\nEnter a size for ship ##{loop_num}. (min = 1, max = 4)"
+      print "> "
+      size = gets.chomp.to_i
+
+      until size >= 1 && size <=4
+        puts "\nPlease enter a number between 1 and 4"
+        print "> "
+        size = gets.chomp.to_i
+      end
+
+      player_ships << Ship.new(name, size)
+      cpu_ships << Ship.new(name, size)
+    end
+  end
+
+  def comp_ship_placement
+    cpu_ships.each do |ship|
+      coordinates = cpu_board.cells.keys.sample(ship.length)
+
+      until cpu_board.valid_placement?(ship, coordinates)
+        coordinates = cpu_board.cells.keys.sample(ship.length)
+      end
+
+      cpu_board.place(ship, coordinates)
+    end
+  end
+
   def player_ship_placement_prompt
     puts "\nI have laid out my ships on the grid."
-    puts 'You now need to lay out your two ships.'
-    puts 'The Cruiser is three units long and the Submarine is two units long.'
+    puts 'You now need to lay out your ships.'
+    puts 'Make sure there is a space between each coordinate otherwise it will be considered invalid.'
     puts "\n"
     player_board.board_render
   end
 
+  def player_ship_placement
+    player_ship_placement_prompt
+
+    player_ships.each do |ship|
+      puts "\nEnter the coordinates for the #{ship.name} ship which is #{ship.length} space(s) long:"
+      print "> "
+      user_input = gets.chomp
+
+      until player_board.valid_placement?(ship, user_input.split)
+        puts 'Sorry, those are invalid coordinates. Please try again:'
+        print "> "
+        user_input = gets.chomp
+      end
+
+      player_board.place(ship, user_input.split)
+    end
+
+    puts "\n"
+  end
+
   def turn
     board_size
+    create_ships
     comp_ship_placement
     player_ship_placement
 
@@ -126,14 +170,17 @@ class StartGame
 
     until won?
       puts "\nEnter the coordinate for your shot:"
+      print "> "
 
       user_input = gets.chomp
       until cpu_board.valid_coordinate?(user_input)
         if cpu_board.cell_fired_at?(user_input)
           puts "You've already fired at this coordinate....please enter a new one:"
+          print "> "
           user_input = gets.chomp
         else
           puts 'Please enter a valid coordinate:'
+          print "> "
           user_input = gets.chomp
         end
       end
@@ -164,7 +211,13 @@ class StartGame
   end
 
   def won?
-    (player_cruiser.sunk? && player_submarine.sunk?) || (cpu_cruiser.sunk? && cpu_submarine.sunk?)
+    players_sunk = player_ships.all? do |ship|
+      ship.sunk?
+    end
+    cpu_sunk = cpu_ships.all? do |ship|
+      ship.sunk?
+    end
+    (players_sunk) || (cpu_sunk)
   end
 
   def player_results?(coordinate)
@@ -188,9 +241,15 @@ class StartGame
   end
 
   def who_won_game?
-    if player_cruiser.sunk? && player_submarine.sunk?
+    players_sunk = player_ships.all? do |ship|
+      ship.sunk?
+    end
+    cpu_sunk = cpu_ships.all? do |ship|
+      ship.sunk?
+    end
+    if players_sunk
       puts "\n\nI won!"
-    elsif cpu_cruiser.sunk? && cpu_submarine.sunk?
+    elsif cpu_sunk
       puts "\n\nYou won!"
     else
       puts 'Uh oh, something went wrong!'
@@ -198,6 +257,7 @@ class StartGame
 
     reset
     puts "\nWould you like to play again?\nEnter 'p' to play. Enter 'q' to quit."
+    print "> "
     user_ready?
   end
 end

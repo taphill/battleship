@@ -1,6 +1,6 @@
 class Board
+  attr_accessor :rows, :columns
   attr_reader :cells
-  attr_writer :rows, :columns
 
   def initialize(rows = 4, columns = 4)
     @rows = rows
@@ -22,9 +22,9 @@ class Board
   end
 
   def valid_placement?(ship, coordinates)
-    return false unless on_playing_board?(coordinates)
-    return false if overlapping?(coordinates)
-    return false unless ship.length == coordinates.length
+    unless on_playing_board?(coordinates) && !(overlapping?(coordinates)) && (ship.length == coordinates.length)
+      return false
+    end
 
     split_coordinates = split_coordinates(coordinates)
 
@@ -72,8 +72,6 @@ class Board
   end
 
   private
-
-  attr_reader :rows, :columns
 
   def get_keys
     letters = get_letters.flat_map { |letter| [letter] * columns }
