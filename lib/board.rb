@@ -22,9 +22,9 @@ class Board
   end
 
   def valid_placement?(ship, coordinates)
-    return false unless on_playing_board?(coordinates)
-    return false if overlapping?(coordinates)
-    return false unless ship.length == coordinates.length
+    unless on_playing_board?(coordinates) && !(overlapping?(coordinates)) && (ship.length == coordinates.length)
+      return false
+    end
 
     split_coordinates = split_coordinates(coordinates)
 

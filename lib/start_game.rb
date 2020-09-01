@@ -44,7 +44,7 @@ class StartGame
     puts "\nRULES OF THE GAME:"
     puts "\n  - You get to choose the size of the board, and the number, name and length of the ships you want."
     puts "  - The minimum board size is 4x4, and the maximum is 26x26."
-    puts "  - The minimum ship size is 1 unit and the maximum is 6 units."
+    puts "  - The minimum ship size is 1 unit and the maximum is 4 units."
     puts "  - You are able to potentially create up to 6 ships in total."
     puts "  - If you choose a board size less than 6 rows OR 6 columns then you will only be allowed to use the default ships."
     puts "  - The default ships are the 3 unit Cruiser and 2 unit Submarine."
@@ -91,8 +91,8 @@ class StartGame
     print "> "
     user_input = gets.chomp.to_i
 
-    until user_input >= 1 && user_input <=6
-      puts "\nPlease enter a number between 1 and 6"
+    until user_input >= 1 && user_input <=4
+      puts "\nPlease enter a number between 1 and 4"
       print "> "
       user_input = gets.chomp.to_i
     end
@@ -105,12 +105,12 @@ class StartGame
       print "> "
       name = gets.chomp
 
-      puts "\nEnter a size for ship ##{loop_num}. (min = 1, max = 6)"
+      puts "\nEnter a size for ship ##{loop_num}. (min = 1, max = 4)"
       print "> "
       size = gets.chomp.to_i
 
-      until size >= 1 && size <=6
-        puts "\nPlease enter a number between 1 and 6"
+      until size >= 1 && size <=4
+        puts "\nPlease enter a number between 1 and 4"
         print "> "
         size = gets.chomp.to_i
       end
@@ -204,7 +204,7 @@ class StartGame
 
   def display_board
     puts '=============COMPUTER BOARD============='
-    cpu_board.board_render(true)
+    cpu_board.board_render
     puts "\n"
     puts '==============PLAYER BOARD=============='
     player_board.board_render(true)
