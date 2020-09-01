@@ -80,6 +80,10 @@ class StartGame
 
   def create_ships
     if player_board.rows < 6 || player_board.columns < 6
+      player_ships << Ship.new("Cruiser", 3)
+      player_ships << Ship.new("Submarine", 2)
+      cpu_ships << Ship.new("Cruiser", 3)
+      cpu_ships << Ship.new("Submarine", 2)
       return puts "\nBased on your board size, the default ships will be used"
     end
 
@@ -88,9 +92,9 @@ class StartGame
     user_input = gets.chomp.to_i
 
     until user_input >= 1 && user_input <=6
-      puts "\nPlease enter a number between 1 and 6"  
+      puts "\nPlease enter a number between 1 and 6"
       print "> "
-      user_input = gets.chomp.to_i    
+      user_input = gets.chomp.to_i
     end
 
     loop_num = 0
@@ -106,9 +110,9 @@ class StartGame
       size = gets.chomp.to_i
 
       until size >= 1 && size <=6
-        puts "\nPlease enter a number between 1 and 6"  
+        puts "\nPlease enter a number between 1 and 6"
         print "> "
-        size = gets.chomp.to_i    
+        size = gets.chomp.to_i
       end
 
       player_ships << Ship.new(name, size)
@@ -149,7 +153,7 @@ class StartGame
         print "> "
         user_input = gets.chomp
       end
-      
+
       player_board.place(ship, user_input.split)
     end
 
@@ -207,7 +211,13 @@ class StartGame
   end
 
   def won?
-    (player_cruiser.sunk? && player_submarine.sunk?) || (cpu_cruiser.sunk? && cpu_submarine.sunk?)
+    players_sunk = player_ships.all? do |ship|
+      ship.sunk?
+    end
+    cpu_sunk = cpu_ships.all? do |ship|
+      ship.sunk?
+    end
+    (players_sunk) || (cpu_sunk)
   end
 
   def player_results?(coordinate)
@@ -231,9 +241,15 @@ class StartGame
   end
 
   def who_won_game?
-    if player_cruiser.sunk? && player_submarine.sunk?
+    players_sunk = player_ships.all? do |ship|
+      ship.sunk?
+    end
+    cpu_sunk = cpu_ships.all? do |ship|
+      ship.sunk?
+    end
+    if players_sunk
       puts "\n\nI won!"
-    elsif cpu_cruiser.sunk? && cpu_submarine.sunk?
+    elsif cpu_sunk
       puts "\n\nYou won!"
     else
       puts 'Uh oh, something went wrong!'
