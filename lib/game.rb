@@ -93,7 +93,7 @@ class Game
     user_input = gets.chomp.to_i
 
     until user_input >= 1 && user_input <= 6
-      puts "\nPlease enter a number between 1 and 4"
+      puts "\nPlease enter a number between 1 and 6"
       print "> "
       user_input = gets.chomp.to_i
     end
