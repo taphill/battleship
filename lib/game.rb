@@ -1,5 +1,6 @@
 class Game
   attr_reader :cpu_board, :player_board, :cpu_ships, :player_ships
+
   def initialize(cpu_board, player_board)
     setup(cpu_board, player_board)
   end
@@ -23,6 +24,10 @@ class Game
     print "> "
   end
 
+  def goodbye
+    puts "\nGoodbye."
+  end
+
   def user_ready?
     user_input = gets.chomp
 
@@ -34,10 +39,6 @@ class Game
 
     return true if user_input.downcase == 'p'
     return false if user_input.downcase == 'q'
-  end
-
-  def goodbye
-    puts "\nGoodbye"
   end
 
   def board_size
@@ -160,7 +161,7 @@ class Game
     puts "\n"
   end
 
-  def turn
+  def begin
     board_size
     create_ships
     comp_ship_placement
@@ -199,7 +200,6 @@ class Game
 
     puts "\n"
     display_board
-    who_won_game?
   end
 
   def display_board
@@ -260,12 +260,10 @@ class Game
     else
       puts 'Uh oh, something went wrong!'
     end
-
-    reset
-    puts "\nWould you like to play again?\nEnter 'p' to play. Enter 'q' to quit."
-    print "> "
-    user_ready?
   end
 
-
+  def play_again?
+    puts "\nWould you like to play again?\nEnter 'p' to play. Enter 'q' to quit."
+    print "> "
+  end
 end
