@@ -44,16 +44,16 @@ class Game
   def board_size
     puts "\nRULES OF THE GAME:"
     puts "\n  - You get to choose the size of the board, and the number, name and length of the ships you want."
-    puts "  - The minimum board size is 4x4, and the maximum is 26x26."
+    puts "  - The minimum board size is 4x4, and the maximum is 12x12."
     puts "  - The minimum ship size is 1 unit and the maximum is 4 units."
-    puts "  - You may potentially create up to 6 ships in total."
+    puts "  - You may potentially create up to 4 ships in total."
     puts "  - If you choose a board size less than 6 rows OR 6 columns then you will only be allowed to use the default ships."
     puts "  - The default ships are the 3 unit Cruiser and 2 unit Submarine."
     puts "\nHow many rows do you want for the board?"
     print "> "
 
     user_input = gets.chomp.to_i
-    until user_input >= 4 && user_input <= 26
+    until user_input >= 4 && user_input <= 12
       puts "Sorry, that's not within the guidelines. Please try again:"
       print "> "
       user_input = gets.chomp.to_i
@@ -66,7 +66,7 @@ class Game
     print "> "
 
     user_input = gets.chomp.to_i
-    until user_input >= 4 && user_input <= 26
+    until user_input >= 4 && user_input <= 12
       puts "Sorry, that's not within the guidelines. Please try again:"
       print "> "
       user_input = gets.chomp.to_i
@@ -92,7 +92,7 @@ class Game
     print "> "
     user_input = gets.chomp.to_i
 
-    until user_input >= 1 && user_input <= 6
+    until user_input >= 1 && user_input <= 4
       puts "\nPlease enter a number between 1 and 4"
       print "> "
       user_input = gets.chomp.to_i
@@ -122,6 +122,8 @@ class Game
   end
 
   def comp_ship_placement
+    puts "\nI'm placing my ships...one moment please."
+
     cpu_ships.each do |ship|
       coordinates = cpu_board.cells.keys.sample(ship.length)
 
@@ -134,7 +136,7 @@ class Game
   end
 
   def player_ship_placement_prompt
-    puts "\nI have laid out my ships on the grid."
+    puts "\nOk! I have laid out my ships on the grid."
     puts 'You now need to lay out your ships.'
     puts 'Make sure there is a space between each coordinate otherwise it will be considered invalid.'
     puts "\n"
