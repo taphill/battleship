@@ -10,20 +10,12 @@ class CellTest < MiniTest::Test
     assert_instance_of Cell, cell
   end
 
-  def test_it_has_coordinate
-    cell = Cell.new("B4")
-
-    assert_equal "B4", cell.coordinate
-  end
-
-  def test_ship
+  def test_it_has_attributes
     cruiser = Ship.new("Cruiser", 3)
     cell = Cell.new("B4")
 
+    assert_equal "B4", cell.coordinate
     assert_nil cell.ship
-
-    cell.place_ship(cruiser)
-    assert_equal cruiser, cell.ship
   end
 
   def test_empty?
@@ -36,7 +28,7 @@ class CellTest < MiniTest::Test
     assert_equal false, cell.empty?
   end
 
-  def test_place_ship
+  def test_it_can_place_ship
     cruiser = Ship.new("Cruiser", 3)
     cell = Cell.new("B4")
     cell.place_ship(cruiser)
