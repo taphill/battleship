@@ -43,4 +43,20 @@ class GameTest < MiniTest::Test
     assert_equal 4, game.player_board.rows
     assert_equal 4, game.player_board.columns
   end
+
+  def test_if_player_or_cpu_won
+    cpu_board = Board.new
+    player_board = Board.new
+
+    game = Game.new(cpu_board, player_board)
+
+    assert_equal true, game.won?
+
+    game.player_ships << Ship.new("Cruiser", 3)
+    game.player_ships << Ship.new("Submarine", 2)
+    game.cpu_ships << Ship.new("Cruiser", 3)
+    game.cpu_ships << Ship.new("Submarine", 2)
+
+    assert_equal false, game.won?
+  end
 end
